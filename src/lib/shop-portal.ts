@@ -5,7 +5,10 @@
  * origin is ever needed, set VITE_SHOP_PORTAL_URL and every "Order home
  * delivery" link will point there instead.
  */
-const CONFIGURED = (import.meta.env.VITE_SHOP_PORTAL_URL as string | undefined)?.trim();
+const CONFIGURED = (
+  process.env.NEXT_PUBLIC_SHOP_PORTAL_URL ||
+  (typeof import.meta !== "undefined" && (import.meta as any).env?.VITE_SHOP_PORTAL_URL)
+)?.trim();
 
 /** Base path of the storefront inside this app. */
 export const SHOP_PORTAL_PATH = "/";

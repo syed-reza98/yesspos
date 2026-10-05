@@ -245,7 +245,7 @@ function DashboardPage() {
   });
 
   const top = Object.values(
-    rangeItems.reduce<Record<string, { name: string; qty: number; total: number }>>((acc, it) => {
+    (rangeItems as any[]).reduce<Record<string, { name: string; qty: number; total: number }>>((acc: any, it: any) => {
       const key = it.name_snapshot;
       acc[key] ??= { name: key, qty: 0, total: 0 };
       acc[key].qty += it.quantity;
@@ -253,7 +253,7 @@ function DashboardPage() {
       return acc;
     }, {}),
   )
-    .sort((a, b) => b.qty - a.qty)
+    .sort((a: any, b: any) => b.qty - a.qty)
     .slice(0, 5);
 
   const activity = useQuery({
@@ -669,7 +669,7 @@ function DashboardPage() {
           <h2 className="mb-3 text-lg font-semibold">{t("bestSeller")}</h2>
           {top.length === 0 && <p className="text-sm text-muted-foreground">{t("noData")}</p>}
           <ul className="space-y-2">
-            {top.map((p) => (
+            {top.map((p: any) => (
               <li key={p.name} className="flex items-center justify-between gap-2 text-sm">
                 <span className="min-w-0 flex-1 truncate">{p.name}</span>
                 <span className="text-muted-foreground">

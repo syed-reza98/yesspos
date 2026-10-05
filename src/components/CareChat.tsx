@@ -106,7 +106,7 @@ export function CareChat() {
       {open && (
         <div className="fixed bottom-0 end-0 z-50 flex h-[min(560px,88vh)] w-full max-w-[400px] flex-col overflow-hidden rounded-t-2xl border border-border bg-card shadow-2xl sm:bottom-5 sm:end-5 sm:rounded-2xl">
           <header className="flex items-center gap-2.5 border-b border-border bg-primary px-3 py-2.5 text-primary-foreground">
-            <img src={logoMark} alt="" width={32} height={32} className="size-8 rounded-lg bg-card object-contain p-0.5" />
+            <img src={typeof logoMark === "string" ? logoMark : (logoMark as any)?.src} alt="" width={32} height={32} className="size-8 rounded-lg bg-card object-contain p-0.5" />
             <div className="min-w-0 flex-1 leading-tight">
               <p className="truncate text-sm font-bold">Bazar Bari Care</p>
               <p className="truncate text-[11px] opacity-90">

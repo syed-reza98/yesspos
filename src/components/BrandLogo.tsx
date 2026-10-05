@@ -27,7 +27,7 @@ export function BrandLogo({
   return (
     <span className={cn("flex items-center gap-2.5", className)}>
       <img
-        src={logoMark}
+        src={typeof logoMark === "string" ? logoMark : (logoMark as any)?.src}
         alt={bn ? "বাজার বাড়ি লোগো" : "Bazar Bari logo"}
         width={size}
         height={size}

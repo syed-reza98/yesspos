@@ -129,6 +129,6 @@ import heroShade from "@/assets/hero-shade.jpg";
 import cardShade from "@/assets/card-shade.jpg";
 
 export const SITE_OTHER_IMAGES: { url: string; name: string; folder: string }[] = [
-  { url: heroShade, name: "Hero Shade", folder: "banners" },
-  { url: cardShade, name: "Card Shade", folder: "banners" },
+  { url: (heroShade as any)?.src || (heroShade as any), name: "Hero Shade", folder: "banners" },
+  { url: (cardShade as any)?.src || (cardShade as any), name: "Card Shade", folder: "banners" },
 ];

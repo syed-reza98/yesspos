@@ -1,0 +1,12 @@
+# cPanel Apache Reverse Proxy / Passenger configuration for pos.yessbangla.top
+RewriteEngine On
+
+# Allow direct serving of static files from public directory
+RewriteCond %{DOCUMENT_ROOT}/public/$1 -f
+RewriteRule ^(.*)$ /public/$1 [L]
+
+# Proxy all other requests to Next.js running on local port 3000
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ http://127.0.0.1:3000/$1 [P,L]
+RequestHeader set X-Forwarded-Proto https

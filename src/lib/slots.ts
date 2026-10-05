@@ -80,8 +80,9 @@ export type SlotState = {
 
 /** Merge the static windows with live counts for a given day. */
 export function slotStates(day: string, rows: SlotAvailability[] | undefined): SlotState[] {
+  const list = Array.isArray(rows) ? rows : [];
   return TIME_SLOTS.map((slot) => {
-    const row = rows?.find((r) => r.slot_id === slot.id);
+    const row = list.find((r) => r.slot_id === slot.id);
     const capacity = row?.capacity ?? 0;
     const available = row ? row.available : capacity;
     const passed = !slotNotPassed(day, slot.id);
