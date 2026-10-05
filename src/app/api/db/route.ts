@@ -123,8 +123,43 @@ export async function POST(req: NextRequest) {
           mapped.orderNo = nextOrder;
         }
 
-        await db.insert(tableSchema).values(mapped);
-        insertedRows.push(mapCamelToSnake(mapped));
+        if (table === 'media_assets') {
+          if (mapped.path && !mapped.filePath) mapped.filePath = mapped.path;
+          if (mapped.url && !mapped.filePath) mapped.filePath = mapped.url;
+        }
+
+        if (table === 'user_carts' && mapped.userId) {
+          const existing = await db.select().from(tableSchema).where(sql`user_id = ${mapped.userId}`).limit(1);
+          if (existing.length > 0) {
+            const updateData = { ...mapped };
+            delete updateData.id;
+            if (Object.keys(updateData).length > 0) {
+              await db.update(tableSchema).set(updateData).where(sql`user_id = ${mapped.userId}`);
+            }
+            insertedRows.push(mapCamelToSnake({ ...existing[0], ...mapped }));
+            continue;
+          }
+        }
+
+        try {
+          await db.insert(tableSchema).values(mapped);
+          insertedRows.push(mapCamelToSnake(mapped));
+        } catch (insertErr: any) {
+          if (insertErr.code === 'ER_DUP_ENTRY' || insertErr.message?.includes('Duplicate entry')) {
+            try {
+              const updateData = { ...mapped };
+              delete updateData.id;
+              if (Object.keys(updateData).length > 0) {
+                await db.update(tableSchema).set(updateData).where(sql`id = ${mapped.id}`);
+              }
+              insertedRows.push(mapCamelToSnake(mapped));
+            } catch {
+              insertedRows.push(mapCamelToSnake(mapped));
+            }
+          } else {
+            throw insertErr;
+          }
+        }
       }
 
       return NextResponse.json({

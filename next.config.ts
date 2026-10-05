@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   serverExternalPackages: ['mysql2', 'bcryptjs'],
   cacheComponents: true,
+  experimental: {
+    instantInsights: {
+      validationLevel: 'manual-warning',
+    },
+  },
   images: {
     unoptimized: true,
   },

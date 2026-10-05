@@ -1,14 +1,16 @@
-'use client';
-
 import { Suspense } from 'react';
-import { Route } from '@/routes/category.$slug';
+import CategoryClient from './CategoryClient';
 
-const Component = (Route as any).component;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
 
-export default function Page() {
   return (
     <Suspense fallback={<div className="min-h-[50vh] flex items-center justify-center text-muted-foreground">Loading...</div>}>
-      <Component />
+      <CategoryClient slug={slug} />
     </Suspense>
   );
 }

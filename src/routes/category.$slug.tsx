@@ -102,6 +102,7 @@ function CategoryPage() {
   const searching = query.trim() !== debounced.trim();
 
   useEffect(() => {
+    if (query === debounced) return;
     const t = window.setTimeout(() => {
       setDebounced(query);
       navigate({
@@ -110,7 +111,7 @@ function CategoryPage() {
       });
     }, 300);
     return () => window.clearTimeout(t);
-  }, [query, navigate]);
+  }, [query, debounced, navigate]);
 
 
   const categories = useQuery({

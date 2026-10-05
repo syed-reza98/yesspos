@@ -33,4 +33,6 @@ dist-ssr
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
+*.mp4
+deploy/*.zip
+

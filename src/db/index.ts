@@ -14,7 +14,9 @@ export function getPool() {
       password: process.env.DB_PASSWORD || '',
       database: process.env.DB_NAME || 'yesspos_dev',
       waitForConnections: true,
-      connectionLimit: 10,
+      connectionLimit: 5,
+      maxIdle: 2,
+      idleTimeout: 30000,
       queueLimit: 0,
       charset: 'utf8mb4',
     });

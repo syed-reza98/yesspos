@@ -138,12 +138,26 @@ export const apiSettings = mysqlTable('api_settings', {
 export const mediaAssets = mysqlTable('media_assets', {
   id: uuidCol('id').primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
-  filePath: text('file_path').notNull(),
+  path: text('path'),
+  url: text('url'),
+  filePath: text('file_path'),
   fileType: varchar('file_type', { length: 60 }),
   fileSize: int('file_size'),
+  folder: varchar('folder', { length: 100 }).default('general'),
   altText: varchar('alt_text', { length: 255 }),
+  mimeType: varchar('mime_type', { length: 100 }),
+  sizeBytes: int('size_bytes'),
+  tags: json('tags'),
+  width: int('width'),
+  height: int('height'),
+  variants: json('variants'),
+  uploadedBy: uuidCol('uploaded_by'),
+  deletedAt: timestamp('deleted_at'),
+  deletedBy: uuidCol('deleted_by'),
+  deletedUsage: json('deleted_usage'),
   category: varchar('category', { length: 60 }).default('general'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().onUpdateNow(),
 });
 
 export const auditLogs = mysqlTable('audit_logs', {
@@ -289,8 +303,10 @@ export const saleReturnItems = mysqlTable('sale_return_items', {
 
 export const userCarts = mysqlTable('user_carts', {
   id: uuidCol('id').primaryKey(),
-  customerPhone: varchar('customer_phone', { length: 30 }).unique().notNull(),
-  items: json('items').notNull(),
+  userId: uuidCol('user_id'),
+  customerPhone: varchar('customer_phone', { length: 30 }),
+  lines: json('lines'),
+  items: json('items'),
   updatedAt: timestamp('updated_at').defaultNow().onUpdateNow(),
 });
 
