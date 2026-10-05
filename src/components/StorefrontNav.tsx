@@ -51,7 +51,7 @@ type NavLink = { to?: string; href?: string; icon: LucideIcon; bn: string; en: s
 
 const LINKS: NavLink[] = [
   { to: "/", icon: Home, bn: "হোম", en: "Home" },
-  { to: "/shop", icon: ShoppingBasket, bn: "স্টোর", en: "Store" },
+  { to: "/category/all", icon: ShoppingBasket, bn: "স্টোর", en: "Store" },
   { to: "/budget", icon: PiggyBank, bn: "বাজেট বাজার", en: "Budget planner" },
 
   { to: "/track", icon: Truck, bn: "অর্ডার ট্র্যাক", en: "Track order" },
@@ -114,7 +114,7 @@ export function StorefrontNav({
   });
 
   const isActive = (l: NavLink) =>
-    !!l.to && (l.to === "/" ? pathname === "/" : pathname.startsWith(l.to));
+    !!l.to && (l.to === "/" ? pathname === "/" : pathname === l.to || pathname.startsWith(l.to + "/"));
 
   const openMega = () => {
     if (closeTimer.current) window.clearTimeout(closeTimer.current);
@@ -197,7 +197,7 @@ export function StorefrontNav({
                   </>
                 );
                 return l.to ? (
-                  <Link key={l.bn} to={l.to} className={cls}>
+                  <Link key={l.bn} to={l.to as "/"} className={cls}>
                     {body}
                   </Link>
                 ) : (
@@ -370,7 +370,7 @@ export function StorefrontNav({
               </>
             );
             return l.to ? (
-              <Link key={l.bn} to={l.to} className={desktopItem(active)}>
+              <Link key={l.bn} to={l.to as "/"} className={desktopItem(active)}>
                 {body}
               </Link>
             ) : (
