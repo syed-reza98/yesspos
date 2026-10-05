@@ -66,7 +66,7 @@ export const Route = createFileRoute("/category/$slug")({
     return parsed.success ? parsed.data : {};
   },
   head: ({ params }) => {
-    const name = titleCase(params.slug);
+    const name = params.slug === "all" ? "All products" : titleCase(params.slug);
     const title = `${name} online in Dhaka — home delivery | Bazar Bari`;
     const description = `Browse ${name.toLowerCase()} at Bazar Bari. Fresh stock, transparent prices and 1-hour home delivery in Dhaka.`;
     const canonical = `${SITE}/category/${params.slug}`;
@@ -138,7 +138,10 @@ function CategoryPage() {
   });
 
   const category = useMemo(
-    () => (categories.data ?? []).find((c) => slugify(c.name_en) === slug) ?? null,
+    () =>
+      slug === "all"
+        ? { id: "__all", name_en: "All products", name_bn: "সব পণ্য" }
+        : ((categories.data ?? []).find((c) => slugify(c.name_en) === slug) ?? null),
     [categories.data, slug],
   );
 
@@ -151,7 +154,7 @@ function CategoryPage() {
   }, [products.data]);
 
   const inCategory = useMemo(
-    () => (products.data ?? []).filter((p) => category && p.category_id === category.id),
+    () => (products.data ?? []).filter((p) => category && (category.id === "__all" || p.category_id === category.id)),
     [products.data, category],
   );
 
