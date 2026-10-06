@@ -11,13 +11,27 @@ export function Link({ to, href, search, params, children, ...props }: any) {
       target = target.replace(`$${k}`, String(v)).replace(`:${k}`, String(v));
     }
   }
-  if (search && typeof search === 'object') {
-    const sp = new URLSearchParams();
-    for (const [k, v] of Object.entries(search)) {
-      if (v !== undefined && v !== null) sp.set(k, String(v));
+  if (search !== undefined) {
+    let searchObj = search;
+    if (typeof searchObj === 'function') {
+      const prev: Record<string, any> = {};
+      if (typeof window !== 'undefined') {
+        try {
+          new URLSearchParams(window.location.search).forEach((v, k) => {
+            prev[k] = v;
+          });
+        } catch {}
+      }
+      searchObj = searchObj(prev);
     }
-    const qs = sp.toString();
-    if (qs) target = `${target}${target.includes('?') ? '&' : '?'}${qs}`;
+    if (searchObj && typeof searchObj === 'object') {
+      const sp = new URLSearchParams();
+      for (const [k, v] of Object.entries(searchObj)) {
+        if (v !== undefined && v !== null && v !== '') sp.set(k, String(v));
+      }
+      const qs = sp.toString();
+      if (qs) target = `${target}${target.includes('?') ? '&' : '?'}${qs}`;
+    }
   }
   return (
     <NextLink href={target} {...props}>

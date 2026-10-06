@@ -13,6 +13,15 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  async redirects() {
+    return [
+      {
+        source: '/shop',
+        destination: '/category/all',
+        permanent: true,
+      },
+    ];
+  },
   turbopack: {
     resolveAlias: {
       '@tanstack/react-router': './src/lib/router-bridge.tsx',
